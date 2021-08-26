@@ -1,6 +1,6 @@
 ![image](https://user-images.githubusercontent.com/86760552/130912831-8ec7077a-8f58-4f1c-b08e-56fc51640bac.png)
 
-# 백신 예약 시스템
+# 백신 예약 시스템 - 완료
 
 본 예제는 MSA/DDD/Event Storming/EDA 를 포괄하는 분석/설계/구현/운영 전단계를 커버하도록 구성한 예제입니다.
 이는 클라우드 네이티브 애플리케이션의 개발에 요구되는 체크포인트들을 통과하기 위한 예시 답안을 포함합니다.
@@ -26,7 +26,7 @@
     - [무정지 재배포](#무정지-재배포)
   - [신규 개발 조직의 추가](#신규-개발-조직의-추가)
 
-# 서비스 시나리오
+# 서비스 시나리오 - 완료
 
 백신 예약
 
@@ -107,7 +107,7 @@
     - Contract Test :  자동화된 경계 테스트를 통하여 구현 오류나 API 계약위반를 미리 차단 가능한가?
 
 
-# 분석/설계
+# 분석/설계 - 완료
 
 ### 1차 완성 모형 및 기능적/비기능적 요구사항을 커버하는지 검증
 
@@ -124,7 +124,7 @@
    
     - 모델은 모든 요구사항을 커버함.
 
-### 비기능 요구사항에 대한 검증
+### 비기능 요구사항에 대한 검증 - 완료
 
 ![image](https://user-images.githubusercontent.com/86760552/130930333-b0202777-9080-4cad-a52b-dc4a822d7aa5.png)
 
@@ -133,7 +133,7 @@
     (3) 예약정보를 한번에 확인할 수 있어야 한다.(CQRS)
     (4) 백신 관리시스템이 문제가 있더라도 예약 취소는 받을 수 있어야 한다.(Async event-driven)
 
-## 헥사고날 아키텍처 다이어그램 도출
+## 헥사고날 아키텍처 다이어그램 도출 - 완료
     
 ![image](https://user-images.githubusercontent.com/86760552/130935503-58a4f6d4-7367-434f-87c6-eb7740fc07b8.png)
 
@@ -143,7 +143,7 @@
     - 서브 도메인과 바운디드 컨텍스트의 분리:  각 팀의 KPI 별로 아래와 같이 관심 구현 스토리를 나눠가짐
 
 
-# 구현:
+# 구현: - 완료
 
 분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트와 파이선으로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
 
@@ -181,7 +181,6 @@ public class VaccineMgmt {
         VaccineRegistered vaccineRegistered = new VaccineRegistered();
         BeanUtils.copyProperties(this, vaccineRegistered);
         vaccineRegistered.publishAfterCommit();
-
     }
 
     public Long getId() {
@@ -235,7 +234,7 @@ public interface VaccineMgmtRepository extends PagingAndSortingRepository<Vaccin
 }
 
 ```
-- 적용 후 REST API 의 테스트
+- ############### 미처리 ###############          적용 후 REST API 의 테스트
 ```
 # app 서비스의 주문처리
 http localhost:8081/orders item="통닭"
