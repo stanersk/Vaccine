@@ -111,7 +111,7 @@
 
 ### 1차 완성 모형 및 기능적/비기능적 요구사항을 커버하는지 검증
 
-![image](https://user-images.githubusercontent.com/86760552/130924521-018a8313-cf66-4819-aa32-84417ffeb304.png)
+![image](https://user-images.githubusercontent.com/86760552/130928450-65ca9b8f-6c4d-4041-9638-0043c5f5aca3.png)
 
     - 정부관리자가 백신접종가능일자별로 접종병원, 백신수량을 등록한다 (ok)
     - 예약자는 접종일자, 접종병원, 코로나 백신 종류를 선택하여 예약한다 (ok)
@@ -126,7 +126,7 @@
 
 ### 비기능 요구사항에 대한 검증
 
-![image](https://user-images.githubusercontent.com/487999/79684184-5c9a9400-826a-11ea-8d87-2ed1e44f4562.png)
+![image](https://user-images.githubusercontent.com/86760552/130928450-65ca9b8f-6c4d-4041-9638-0043c5f5aca3.png)
 
     - 백신수량 감소가 되지 않은 건은 예약이 되지 않아야 한다.(Sync 호출)
         
