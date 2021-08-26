@@ -126,7 +126,7 @@
 
 ### 비기능 요구사항에 대한 검증
 
-![image](https://user-images.githubusercontent.com/86760552/130928450-65ca9b8f-6c4d-4041-9638-0043c5f5aca3.png)
+![image](https://user-images.githubusercontent.com/86760552/130928937-fa813c34-59c4-4375-8ab2-a8dc77b45d90.png)
 
     - 백신수량 감소가 되지 않은 건은 예약이 되지 않아야 한다.(Sync 호출)
         
