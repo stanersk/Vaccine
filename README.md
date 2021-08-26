@@ -166,20 +166,17 @@
 
 ### 1차 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
 
-![image](https://user-images.githubusercontent.com/487999/79684167-3ecd2f00-826a-11ea-806a-957362d197e3.png)
+![image](https://user-images.githubusercontent.com/86760552/130924521-018a8313-cf66-4819-aa32-84417ffeb304.png)
 
     - 정부관리자가 백신접종가능일자별로 접종병원, 백신수량을 등록/수정/삭제 한다 (ok)
     - 예약자는 접종일자, 접종병원을 선택하여 예약한다 (ok)
     - 예약과 동시에 예약가능한 백신수량이 감소한다 (ok)
-
-![image](https://user-images.githubusercontent.com/487999/79684170-47256a00-826a-11ea-9777-e16fafff519a.png)
-
     - 예약자는 예약을 취소할 수 있다 (ok)
     - 예약자는 접종 예약정보(예약번호, 예약상태, 접종예정일자, 접종병원, 백신종류)를 조회할 수 있다 (ok) 
 
 ### 모델 수정
 
-![image](https://user-images.githubusercontent.com/487999/79684176-4e4c7800-826a-11ea-8deb-b7b053e5d7c6.png)
+![image](https://user-images.githubusercontent.com/86760552/130924521-018a8313-cf66-4819-aa32-84417ffeb304.png)
     
     - 수정된 모델은 모든 요구사항을 커버함.
 
