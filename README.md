@@ -107,14 +107,6 @@
 
 # 분석/설계
 
-### 완성된 1차 모형
-
-![image](https://user-images.githubusercontent.com/487999/79683646-63bfa300-8266-11ea-9bc5-c0b650507ac8.png)
-
-    - View Model 추가
-
-
-
 ### 1차 완성 모형 및 기능적/비기능적 요구사항을 커버하는지 검증
 
 ![image](https://user-images.githubusercontent.com/86760552/130924521-018a8313-cf66-4819-aa32-84417ffeb304.png)
