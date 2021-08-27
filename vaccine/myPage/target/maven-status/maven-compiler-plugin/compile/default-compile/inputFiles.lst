@@ -1,9 +1,0 @@
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/PolicyHandler.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/MyPageViewHandler.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/MyPageRepository.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/AbstractEvent.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/MyPage.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/MyPageApplication.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/ReservationCancelled.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/config/kafka/KafkaProcessor.java
-/home/project/Istio-Timeout-and-Retry/vaccine/myPage/src/main/java/vaccinereservation/VaccineReserved.java
