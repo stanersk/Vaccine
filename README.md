@@ -688,12 +688,7 @@ hystrix:
 - 60초 동안 실시
 
 ```
-$ siege -c100 -t60S -r10 --content-type "application/json" 'http://localhost:8081/orders POST {"item": "chicken"}'
-
-** SIEGE 4.0.5
-** Preparing 100 concurrent users for battle.
-The server is now under siege...
-
+$ siege -c100 -t60S -v --content-type "application/json" 'http://localhost:8081/reservations POST {"vaccineId": 1}'
 
 ```
 ![부하테스트2](https://user-images.githubusercontent.com/86760552/131077990-b536e8dd-2254-43bf-8a13-0f7f2e71f21f.png)
