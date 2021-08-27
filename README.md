@@ -802,3 +802,94 @@ containers:
 - 실제 모습
 
 ![configmap_kubectl](https://user-images.githubusercontent.com/86760552/131078470-747d7f86-f066-416b-ad54-59c808fb6181.jpg)
+
+## Persistent Volume
+
+1. persistent volume claim 생성 
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vaccine-pvc
+  labels:
+    app: vaccine-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Ki
+  storageClassName: azurefile
+
+```
+2. deployment 에적용
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaccine
+  labels:
+    app: vaccine
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vaccine
+  template:
+    metadata:
+      labels:
+        app: vaccine
+    spec:
+      containers:
+        - name: vaccine
+          image: user09acr.azurecr.io/vaccine:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+          volumeMounts:
+            - name: volume
+              mountPath: "/apps/data"
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: vaccine-pvc
+
+```
+
+3. A pod에서 파일을 올리고 B pod 에서 확인
+```
+kubectl get pod
+NAME                            READY   STATUS    RESTARTS   AGE
+gateway-7cbb87bc9f-6zj5m        1/1     Running   0          3h13m
+mypage-77dcbcb79b-q8n6b         1/1     Running   0          3h8m
+notification-5c5b768898-8bg65   1/1     Running   0          3h7m
+reservation-6b86b764bf-rmcwg    1/1     Running   0          18m
+siege                           1/1     Running   0          124m
+vaccine-5b54ccfc8-nf5lh         1/1     Running   0          56s
+vaccine-fc887689b-5mjjd         1/1     Running   0          56s
+
+kubectl exec -it vaccine-5b54ccfc8-nf5lh /bin/sh
+/ # cd /apps/data
+/apps/data # touch intensive_course_work
+
+```
+
+
+
+
