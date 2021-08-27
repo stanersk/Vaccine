@@ -403,18 +403,17 @@ Sample Test
 
 ```
 # notification 서비시를 잠시 내려놓음 (ctrl+c)
+![notification다운](https://user-images.githubusercontent.com/86760552/131071546-679b2e04-26cb-4fb5-b01f-b7a9a1c88c62.PNG)
 
-# 예약 예약 처리
-http localhost:8081/orders item=통닭 storeId=1   #Success
+#예약 취소 처리 정상
+![백신예약 취소](https://user-images.githubusercontent.com/86760552/131071595-3b4525cb-a645-47d3-97b2-bb75b2e30aad.PNG)
 
-# Notification 상태 확인
-http localhost:8080/orders     #  상태 안바뀜 확인
+#notification 가동
+![notification 서비스기동](https://user-images.githubusercontent.com/86760552/131071637-f5e6180a-9afc-401f-84d6-45a463fe6f9c.PNG)
 
-# 백신 관리 시스템 기동
-mvn spring-boot:run
+#예약 변경 확인
+![정상적으로 취소알람발생 확인가능](https://user-images.githubusercontent.com/86760552/131071705-52474794-1ec6-48a1-8b47-2820135b6b12.PNG)
 
-# Notification 상태 확인
-http localhost:8080/orders     #  상태가 바뀜 확인
 
 ```
 
