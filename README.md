@@ -397,25 +397,25 @@ public class PolicyHandler{
             notificationRepository.save(noti);
         }
 ```
-Sample Test ====>  미완료.
+Sample Test 
 
-상점 시스템은 주문/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, 상점시스템이 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
+백신 예약 시스템은 백신취소와 메시지 전송이 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, notification이 유지보수로 인해 잠시 내려간 상태라도 이벤트 전송받는데 문제가 없다.
+
 ```
-# 백신 관리 시스템을 잠시 내려놓음 (ctrl+c)
+# notification 서비시를 잠시 내려놓음 (ctrl+c)
 
-# 예약 취소 처리
-
+# 예약 예약 처리
 http localhost:8081/orders item=통닭 storeId=1   #Success
 
-# 취소 상태 확인
-http localhost:8080/orders     # 주문상태 안바뀜 확인
+# Notification 상태 확인
+http localhost:8080/orders     #  상태 안바뀜 확인
 
 # 백신 관리 시스템 기동
-cd 상점
 mvn spring-boot:run
 
-#주문상태 확인
-http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 확인
+# Notification 상태 확인
+http localhost:8080/orders     #  상태가 바뀜 확인
+
 ```
 
 ## CQRS
