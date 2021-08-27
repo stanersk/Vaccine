@@ -401,7 +401,6 @@ Sample Test
 
 백신 예약 시스템은 백신취소와 메시지 전송이 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, notification이 유지보수로 인해 잠시 내려간 상태라도 이벤트 전송받는데 문제가 없다.
 
-```
 # notification 서비시를 잠시 내려놓음 (ctrl+c)
 ![notification다운](https://user-images.githubusercontent.com/86760552/131071546-679b2e04-26cb-4fb5-b01f-b7a9a1c88c62.PNG)
 
@@ -414,8 +413,6 @@ Sample Test
 #예약 변경 확인
 ![정상적으로 취소알람발생 확인가능](https://user-images.githubusercontent.com/86760552/131071705-52474794-1ec6-48a1-8b47-2820135b6b12.PNG)
 
-
-```
 
 ## CQRS
 
