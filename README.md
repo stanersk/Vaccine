@@ -318,7 +318,6 @@ public interface VaccineMgmtService {
 - 동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, 백신관리 시스템이 장애가 나면 예약을 못받는다는 것을 확인:
 
 
-```
 - 백신 서비스 다운
 ![1  백신서비스다운](https://user-images.githubusercontent.com/86760552/131067753-bb9323ea-31ee-4ab7-9475-c78f994e450f.PNG)
 
@@ -331,7 +330,6 @@ public interface VaccineMgmtService {
 - 백신 예약 - 성공
 ![4 백신예약완료](https://user-images.githubusercontent.com/86760552/131067855-6e7c34e0-e41e-4725-a9b8-6687ab33a8a4.PNG)
 
-```
 
 - 또한 과도한 요청시에 서비스 장애가 도미노 처럼 벌어질 수 있다. (서킷브레이커, 폴백 처리는 운영단계에서 설명한다.)
 
