@@ -389,8 +389,8 @@ public class PolicyHandler{
             /////////////////////////////////////////////
             System.out.println("##### listener CancelPayment : " + reservationCancelled.toJson());
             
-            // 취소시킬 payId 추출
-            long id = reservationCancelled.getId(); // 취소시킬 payId
+            // 취소시킬 Id 추출
+            long id = reservationCancelled.getId(); // 취소시킬 Id
 
             Optional<VaccineMgmt> res = vaccineMgmtRepository.findById(id);
             VaccineMgmt vaccine = res.get();
