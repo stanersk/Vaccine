@@ -424,8 +424,8 @@ table 구조도.. 등..
 
 
 
-실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
 
+- 실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
 ![notification](https://user-images.githubusercontent.com/86760552/131062888-838a6a0b-7255-41de-b41c-45932d71de86.JPG)
 
 '''
