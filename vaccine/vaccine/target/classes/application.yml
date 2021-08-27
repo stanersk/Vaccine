@@ -38,6 +38,15 @@ logging:
     org.springframework.cloud: debug
 server:
   port: 8082
+feign:
+  hystrix:
+    enabled: true
+    
+hystrix:
+  command:
+    # 전역설정
+    default:
+      execution.isolation.thread.timeoutInMilliseconds: 610
 ---
 
 spring:
@@ -63,3 +72,12 @@ spring:
         event-out:
           destination: vaccinereservation
           contentType: application/json
+feign:
+  hystrix:
+    enabled: true
+    
+hystrix:
+  command:
+    # 전역설정
+    default:
+      execution.isolation.thread.timeoutInMilliseconds: 610

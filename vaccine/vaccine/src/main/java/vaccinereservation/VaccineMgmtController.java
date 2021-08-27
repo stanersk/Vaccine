@@ -22,6 +22,12 @@ import java.util.Optional;
                     produces = "application/json;charset=UTF-8")
     // public boolean updateVaccine(HttpServletRequest request, HttpServletResponse response) throws Exception {
     public boolean updateVaccine(HttpServletRequest request, HttpServletResponse response) throws Exception {
+            
+            try {
+                Thread.currentThread().sleep((long) (400 + Math.random() * 220));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println("##### /vaccineMgmts/updateVaccine  called #####");
 
             // Parameter로 받은 RoomID 추출
