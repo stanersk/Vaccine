@@ -319,19 +319,17 @@ public interface VaccineMgmtService {
 
 
 ```
-# 결제 (pay) 서비스를 잠시 내려놓음 (ctrl+c)  ---- Update 예정..
+# 백신 관리 서비스를 잠시 내려놓음 (ctrl+c)  ---- Updating
 
 #백신 예약 
-http localhost:8081/orders item=통닭 storeId=1   #Fail
-http localhost:8081/orders item=피자 storeId=2   #Fail
+결과 실패 화면.
 
-#결제서비스 재기동
-cd 결제
+#백신 관리 서비스 재기동
 mvn spring-boot:run
 
 #백신 예약
-http localhost:8081/orders item=통닭 storeId=1   #Success
-http localhost:8081/orders item=피자 storeId=2   #Success
+결과 실패 화면.
+
 ```
 
 - 또한 과도한 요청시에 서비스 장애가 도미노 처럼 벌어질 수 있다. (서킷브레이커, 폴백 처리는 운영단계에서 설명한다.)
@@ -439,6 +437,13 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ![4  Notification_알림생성](https://user-images.githubusercontent.com/86760552/131065640-5c631fc8-0c01-4cff-89bc-c87923f1c65b.PNG)
 
 '''
+
+## Correlation
+Vanccine 관리 프로젝트에서는 PolicyHandler에서 처리 시 어떤 건에 대한 처리인지를 구별하기 위한 Correlation-key 구현을 이벤트 클래스 안의 변수로 전달받아 
+서비스간 연관된 처리를 정확하게 구현하고 있습니다.
+
+
+
 
 # 운영
 
