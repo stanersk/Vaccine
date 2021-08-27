@@ -17,26 +17,26 @@ import java.util.Optional;
     @Autowired
     VaccineMgmtRepository vaccineMgmtRepository;
 
-    @RequestMapping(value = "/vaccineMgmts",
-                    method = RequestMethod.PATCH,
+    @RequestMapping(value = "/vaccineMgmts/updateVaccine",
+                    method = RequestMethod.PUT,
                     produces = "application/json;charset=UTF-8")
-
     // public boolean updateVaccine(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    public boolean updateVaccine(@RequestBody VaccineMgmt vaccineMgmt) throws Exception {
+    public boolean updateVaccine(HttpServletRequest request, HttpServletResponse response) throws Exception {
             System.out.println("##### /vaccineMgmts/updateVaccine  called #####");
 
             // Parameter로 받은 RoomID 추출
             // long id = Long.valueOf(request.getParameter("id"));
-            long id = Long.valueOf(vaccineMgmt.getId());
+            // long id = Long.valueOf(vaccineMgmt.getId());
+            long id = Long.valueOf(request.getParameter("vaccineId"));
             System.out.println("######################## updateVaccine id : " + id);
 
 
             Optional<VaccineMgmt> res = vaccineMgmtRepository.findById(id);
             VaccineMgmt vaccine = res.get();
 
-            vaccine.setUserId(vaccineMgmt.getUserId());
-            vaccine.setQty(vaccineMgmt.getQty() - 1);
-            // DB Update
+            // vaccine.setUserId(vaccineMgmt.getUserId());
+            vaccine.setQty(vaccine.getQty() - 1);
+            // // DB Update
             vaccineMgmtRepository.save(vaccine);
 
             boolean result = true;

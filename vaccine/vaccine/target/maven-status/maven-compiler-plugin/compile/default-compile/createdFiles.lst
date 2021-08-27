@@ -1,0 +1,10 @@
+vaccinereservation/VaccineMgmtRepository.class
+vaccinereservation/PolicyHandler.class
+vaccinereservation/VaccineMgmt.class
+vaccinereservation/AbstractEvent$1.class
+vaccinereservation/VaccineMgmtController.class
+vaccinereservation/ReservationCancelled.class
+vaccinereservation/VaccineApplication.class
+vaccinereservation/AbstractEvent.class
+vaccinereservation/config/kafka/KafkaProcessor.class
+vaccinereservation/VaccineRegistered.class
