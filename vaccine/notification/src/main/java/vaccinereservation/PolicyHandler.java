@@ -26,13 +26,13 @@ public class PolicyHandler{
             /////////////////////////////////////////////
             // 취소 요청이 왔을 때 -> status -> cancelled 
             /////////////////////////////////////////////
-            System.out.println("##### listener CancelPayment : " + vaccineRegistered.toJson());
-            
+            System.out.println("##### listener vaccineRegistered : " + vaccineRegistered.toJson());
+            Notification noti = new Notification();
             // 취소시킬 payId 추출
-            long id = vaccineRegistered.getId(); // 취소시킬 payId
+            // long id = vaccineRegistered.getId(); // 취소시킬 payId
 
-            Optional<Notification> res = notificationRepository.findById(id);
-            Notification noti = res.get();
+            // Optional<Notification> res = notificationRepository.findById(id);
+            // Notification noti = res.get();
 
             noti.setUserId(vaccineRegistered.getUserId());
             noti.setMessage("관리자에 의해 백신이 등록되었습니다.");

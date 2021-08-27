@@ -10,7 +10,8 @@ public class VaccineMgmt {
     private String hospital;
     private String vaccineStatus;
     private Long userId;
-
+    
+  
     public Long getId() {
         return id;
     }
@@ -47,5 +48,6 @@ public class VaccineMgmt {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
 
 }

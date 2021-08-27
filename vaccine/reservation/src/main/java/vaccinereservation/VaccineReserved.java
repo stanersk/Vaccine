@@ -9,6 +9,7 @@ public class VaccineReserved extends AbstractEvent {
     private Date reservedDate;
     private Long userId;
     private String reservationStatus;
+    private Long vaccineId;
 
     public VaccineReserved(){
         super();
@@ -48,5 +49,13 @@ public class VaccineReserved extends AbstractEvent {
 
     public void setReservationStatus(String reservationStatus) {
         this.reservationStatus = reservationStatus;
+    }
+
+    public Long getVaccineId() {
+        return vaccineId;
+    }
+
+    public void setVaccineId(Long vaccineId) {
+        this.vaccineId = vaccineId;
     }
 }
