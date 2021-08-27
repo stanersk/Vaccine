@@ -234,16 +234,15 @@ public interface VaccineMgmtRepository extends PagingAndSortingRepository<Vaccin
 }
 
 ```
-- ############### 미처리 ###############          적용 후 REST API 의 테스트
-```
-# app 서비스의 주문처리
-http localhost:8081/orders item="통닭"
 
-# store 서비스의 배달처리
-http localhost:8083/주문처리s orderId=1
+# 백신 등록
+http post localhost:8088/vaccineMgmts id=1 qty=100 availableDate=2021-08-30 hospital=seoul
 
-# 주문 상태 확인
-http localhost:8081/orders/1
+백신 예약
+http post localhost:8088/reservations vaccineId=1 userId=1 reservedDate=2021-08-27 reservationStatus=“reserved”
+
+백신 취소
+http patch localhost:8088/reservations/1 reservationStatus="cancelled
 
 ```
 
