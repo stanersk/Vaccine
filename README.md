@@ -319,16 +319,17 @@ public interface VaccineMgmtService {
 
 
 ```
-# 백신 관리 서비스를 잠시 내려놓음 (ctrl+c)  ---- Updating
+- 백신 서비스 다운
+![1  백신서비스다운](https://user-images.githubusercontent.com/86760552/131067753-bb9323ea-31ee-4ab7-9475-c78f994e450f.PNG)
 
-#백신 예약 
-결과 실패 화면.
+- 백신 예약 - 에러
+![2  백신예약 실패](https://user-images.githubusercontent.com/86760552/131067772-00eca8c2-1dbd-4cc6-8dd4-cf16cb60df48.PNG)
 
-#백신 관리 서비스 재기동
-mvn spring-boot:run
+- 백신 서비스 개시
+![3  백신재기동완료](https://user-images.githubusercontent.com/86760552/131067806-53bad80e-f4d9-427e-b829-7a2979f0a468.PNG)
 
-#백신 예약
-결과 실패 화면.
+- 백신 예약 - 성공
+![4 백신예약완료](https://user-images.githubusercontent.com/86760552/131067855-6e7c34e0-e41e-4725-a9b8-6687ab33a8a4.PNG)
 
 ```
 
