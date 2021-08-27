@@ -889,7 +889,6 @@ kubectl exec -it vaccine-5b54ccfc8-nf5lh /bin/sh
 /apps/data # touch intensive_course_work
 
 ```
-
-
+![pvc 파일 업로드 결과](https://user-images.githubusercontent.com/86760552/131083001-8fb955f3-f0ea-4272-a64f-0b4e3c678710.png)
 
 
