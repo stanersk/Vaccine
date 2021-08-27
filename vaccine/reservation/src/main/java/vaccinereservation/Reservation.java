@@ -21,6 +21,8 @@ public class Reservation {
 
     @PostPersist
     public void onPostPersist(){
+        
+      
 
         ReservationApplication.applicationContext.getBean(vaccinereservation.external.VaccineMgmtService.class)
                 .updateVaccine(this.vaccineId);
