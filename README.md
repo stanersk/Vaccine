@@ -338,9 +338,9 @@ public interface VaccineMgmtService {
 ## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트 -- 소스 코드 적용.
 
 
-백신 취소는 비동기식으로 처리하여 백신관리 시스템의 처리를 위하여 취소주문이 블로킹 되지 않아도록 처리한다.
+백신 Notification 정보 관리는 비동기식으로 처리하여 백신관리 시스템의 처리에 영향을 주지 않도록 블로킹 처리가 되지 않도록 처리한다.
  
-- 이를 위하여 취소 기록을 남긴 후에 곧바로 취소 되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
+- 이를 위하여 예약 정보의 생성/변경의 기록을 남긴 후에 곧바로 생성/변경 되었다고 도메인 이벤트를 카프카로 송출한다(Publish)
  
 ```
 package vaccinereservation;
@@ -363,68 +363,61 @@ public class Reservation {
         reservationCancelled.publishAfterCommit();
     }
 ```
-- 상점 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
+- 백신 관리 서비스에서는 예약 취소 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
 
 ```
-package vaccinereservation;
-
-...
-
-@Service
 public class PolicyHandler{
+    @Autowired NotificationRepository notificationRepository;
 
-   @Autowired VaccineMgmtRepository vaccineMgmtRepository;
-   
-   @StreamListener(KafkaProcessor.INPUT)
-   public void wheneverReservationCancelled_IncreaseVaccine(@Payload ReservationCancelled reservationCancelled){
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverVaccineRegistered_SendSms(@Payload VaccineRegistered vaccineRegistered){
 
-        if(!reservationCancelled.validate()) return;
+        // if(!vaccineRegistered.validate()) return;
 
-        System.out.println("\n\n##### listener IncreaseVaccine : " + reservationCancelled.toJson() + "\n\n");
+        System.out.println("\n\n##### listener SendSms : " + vaccineRegistered.toJson() + "\n\n");
 
-        if(reservationCancelled.validate()){
+        if(vaccineRegistered.validate()){
 
             /////////////////////////////////////////////
             // 취소 요청이 왔을 때 -> status -> cancelled 
             /////////////////////////////////////////////
-            System.out.println("##### listener CancelPayment : " + reservationCancelled.toJson());
-            
+            System.out.println("##### listener vaccineRegistered : " + vaccineRegistered.toJson());
+            Notification noti = new Notification();
             // 취소시킬 Id 추출
-            long id = reservationCancelled.getId(); // 취소시킬 Id
+            // long id = vaccineRegistered.getId(); // 취소시킬 Id
 
-            Optional<VaccineMgmt> res = vaccineMgmtRepository.findById(id);
-            VaccineMgmt vaccine = res.get();
+            // Optional<Notification> res = notificationRepository.findById(id);
+            // Notification noti = res.get();
 
-            vaccine.setReservationId(reservationCancelled.getId());
-            vaccine.setUserId(reservationCancelled.getUserId());
-            vaccine.setQty(vaccine.getQty() + 1); 
+            noti.setUserId(vaccineRegistered.getUserId());
+            noti.setMessage("관리자에 의해 백신이 등록되었습니다.");
+            noti.setVaccineStatus("registered"); 
 
             // DB Update
-            vaccineMgmtRepository.save(vaccine);
+            notificationRepository.save(noti);
         }
-}
-
 ```
-Sample Test 는 미완료.
+Sample Test ====>  미완료.
 
 상점 시스템은 주문/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, 상점시스템이 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
 ```
-# 상점 서비스 (store) 를 잠시 내려놓음 (ctrl+c)
+# 백신 관리 시스템을 잠시 내려놓음 (ctrl+c)
 
-#주문처리
+# 예약 취소 처리
+
 http localhost:8081/orders item=통닭 storeId=1   #Success
-http localhost:8081/orders item=피자 storeId=2   #Success
 
-#주문상태 확인
+# 취소 상태 확인
 http localhost:8080/orders     # 주문상태 안바뀜 확인
 
-#상점 서비스 기동
+# 백신 관리 시스템 기동
 cd 상점
 mvn spring-boot:run
 
 #주문상태 확인
 http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 확인
 ```
+
 ## CQRS
 
 - Table 구조
