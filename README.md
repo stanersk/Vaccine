@@ -531,6 +531,103 @@ Vanccine 관리 프로젝트에서는 PolicyHandler에서 처리 시 어떤 건�
 - 백신 취소
 ![3 백신취소](https://user-images.githubusercontent.com/86760552/131067043-e574c60c-6200-4c4a-b337-d2bdbc6b0884.PNG)
 
+## API 게이트웨이
+```
+  1. gateway 스프링부트 App을 추가 후 application.yaml내에 각 마이크로 서비스의 routes 를 추가하고 gateway 서버의 포트를 8080 으로 설정함
+   
+      - application.yaml 예시
+        spring:
+          profiles: docker
+          cloud:
+            gateway:
+              routes:
+                - id: payment
+                  uri: http://payment:8080
+                  predicates:
+                    - Path=/payments/** 
+                - id: room
+                  uri: http://room:8080
+                  predicates:
+                    - Path=/rooms/**, /reviews/**, /check/**
+                - id: reservation
+                  uri: http://reservation:8080
+                  predicates:
+                    - Path=/reservations/**
+                - id: message
+                  uri: http://message:8080
+                  predicates:
+                    - Path=/messages/** 
+                - id: viewpage
+                  uri: http://viewpage:8080
+                  predicates:
+                    - Path= /roomviews/**
+              globalcors:
+                corsConfigurations:
+                  '[/**]':
+                    allowedOrigins:
+                      - "*"
+                    allowedMethods:
+                      - "*"
+                    allowedHeaders:
+                      - "*"
+                    allowCredentials: true
+
+        server:
+          port: 8080            
+
+  2. Kubernetes용 Deployment.yaml 을 작성하고 Kubernetes에 Deploy를 생성함
+      - Deployment.yaml 예시
+      
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: gateway
+	  labels:
+	    app: gateway
+	spec:
+	  replicas: 1
+	  selector:
+	    matchLabels:
+	      app: gateway
+	  template:
+	    metadata:
+	      labels:
+		app: gateway
+	    spec:
+	      containers:
+		- name: gateway
+		  image: user09acr.azurecr.io/gateway:latest
+		  ports:
+		    - containerPort: 8080
+
+```
+
+Gateway 그림 삽입 필요.
+
+```
+  3. Kubernetes용 Service.yaml을 작성하고 Kubernetes에 Service/LoadBalancer을 생성하여 Gateway 엔드포인트를 확인함. 
+      - Service.yaml 예시
+      
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: gateway
+	  labels:
+	    app: gateway
+	spec:
+	  ports:
+	    - port: 8080
+	      targetPort: 8080
+	  selector:
+	    app: gateway
+	  type:
+	    LoadBalancer         
+     
+        Service 생성
+        kubectl apply -f service.yaml      
+```
+Gateway Loadbal 그림 삽입 필요.
+
 
 # 운영
 
