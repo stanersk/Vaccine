@@ -298,7 +298,7 @@ CMD ["python", "policy-handler.py"]
 ```
 
 
-## 동기식 호출 과 Fallback 처리 -- Fallback 처리가 없음......
+## 동기식 호출 과 Fallback 처리 -- Update 예정....
 
 분석단계에서의 조건 중 하나로 주문(app)->결제(pay) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
@@ -343,7 +343,7 @@ public interface VaccineMgmtService {
 
 
 ```
-# 결제 (pay) 서비스를 잠시 내려놓음 (ctrl+c)  ---- 미완료
+# 결제 (pay) 서비스를 잠시 내려놓음 (ctrl+c)  ---- Update 예정..
 
 #주문처리
 http localhost:8081/orders item=통닭 storeId=1   #Fail
@@ -363,7 +363,7 @@ http localhost:8081/orders item=피자 storeId=2   #Success
 
 
 
-## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트 -- 미 완료
+## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트 -- 소스 코드 적용.
 
 
 결제가 이루어진 후에 상점시스템으로 이를 알려주는 행위는 동기식이 아니라 비 동기식으로 처리하여 상점 시스템의 처리를 위하여 결제주문이 블로킹 되지 않아도록 처리한다.
@@ -401,8 +401,10 @@ package vaccinereservation;
 @Service
 public class PolicyHandler{
 
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReservationCancelled_IncreaseVaccine(@Payload ReservationCancelled reservationCancelled){
+   @Autowired VaccineMgmtRepository vaccineMgmtRepository;
+   
+   @StreamListener(KafkaProcessor.INPUT)
+   public void wheneverReservationCancelled_IncreaseVaccine(@Payload ReservationCancelled reservationCancelled){
 
         if(!reservationCancelled.validate()) return;
 
@@ -431,24 +433,7 @@ public class PolicyHandler{
 }
 
 ```
-실제 구현을 하자면, 카톡 등으로 점주는 노티를 받고, 요리를 마친후, 주문 상태를 UI에 입력할테니, 우선 주문정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.:
-  
-```
-  @Autowired 주문관리Repository 주문관리Repository;
-  
-  @StreamListener(KafkaProcessor.INPUT)
-  public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
-
-      if(결제승인됨.isMe()){
-          카톡전송(" 주문이 왔어요! : " + 결제승인됨.toString(), 주문.getStoreId());
-
-          주문관리 주문 = new 주문관리();
-          주문.setId(결제승인됨.getOrderId());
-          주문관리Repository.save(주문);
-      }
-  }
-
-```
+Sample Test 는 미완료.
 
 상점 시스템은 주문/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, 상점시스템이 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
 ```
