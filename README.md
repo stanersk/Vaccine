@@ -263,6 +263,9 @@ http patch localhost:8088/reservations/1 reservationStatus="cancelled
 		</dependency>
 
 ```
+```
+![image](https://user-images.githubusercontent.com/86760552/131065064-33a9240f-c23e-4d18-8a4b-b893c1963c6e.png)
+```
 
 ## 동기식 호출 과 Fallback 처리 -- Update 예정....
 
