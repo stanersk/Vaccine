@@ -633,10 +633,16 @@ Gateway Loadbal 확인
 
 각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 GCP를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 cloudbuild.yml 에 포함되었다.
 
+
 - 도커 이미지
+
+
 ![도커 이미지](https://user-images.githubusercontent.com/86760552/131076024-b138926d-43b3-4ffe-9cf3-61b935d3bc6e.png)
 
+
 - Azure Portal
+
+
 ![azure_potal](https://user-images.githubusercontent.com/86760552/131076080-9043917d-d1cc-4b8e-bdd0-a69157bf2e68.PNG)
 
 
@@ -916,4 +922,46 @@ Concurrency:		       96.02
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 
+## Config Map
 
+1: cofingmap.yml 파일 생성
+```
+kubectl apply -f cofingmap.yml
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: airbnb-config
+  namespace: airbnb
+data:
+  # 단일 key-value
+  max_reservation_per_person: "10"
+  ui_properties_file_name: "user-interface.properties"
+```
+2: deployment.yml에 적용하기
+```
+kubectl apply -f deployment.yml
+
+
+.......
+          env:
+			# cofingmap에 있는 단일 key-value
+            - name: MAX_RESERVATION_PER_PERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: airbnb-config
+                  key: max_reservation_per_person
+           - name: UI_PROPERTIES_FILE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: airbnb-config
+                  key: ui_properties_file_name
+          volumeMounts:
+          - mountPath: "/mnt/aws"
+            name: volume
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: aws-efs
+```
