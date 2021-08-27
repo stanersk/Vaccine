@@ -236,6 +236,7 @@ public interface VaccineMgmtRepository extends PagingAndSortingRepository<Vaccin
 ```
 - 적용 후 REST API 의 테스트
 
+```
 
 백신 등록
 http post localhost:8088/vaccineMgmts id=1 qty=100 availableDate=2021-08-30 hospital=seoul
@@ -246,6 +247,7 @@ http post localhost:8088/reservations vaccineId=1 userId=1 reservedDate=2021-08-
 백신 취소
 http patch localhost:8088/reservations/1 reservationStatus="cancelled
 
+```
 
 ## 폴리글랏 퍼시스턴스 -- 검토 필요
 
