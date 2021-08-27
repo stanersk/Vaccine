@@ -428,6 +428,7 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 
 
+![4  Notification_알림생성](https://user-images.githubusercontent.com/86760552/131065640-5c631fc8-0c01-4cff-89bc-c87923f1c65b.PNG)
 
 - 실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
 
