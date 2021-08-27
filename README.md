@@ -422,102 +422,97 @@ Sample Test
 
 - viewpage MSA ViewHandler 를 통해 구현
 ```
+@Service
+public class MyPageViewHandler {
+
+
+    @Autowired
+    private MyPageRepository myPageRepository;
+
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverVaccineRegistered_SendSms(@Payload VaccineRegistered vaccineRegistered){
+    public void whenVaccineReserved_then_CREATE_1 (@Payload VaccineReserved vaccineReserved) {
+        try {
 
-        // if(!vaccineRegistered.validate()) return;
+            if (!vaccineReserved.validate()) return;
 
-        System.out.println("\n\n##### listener SendSms : " + vaccineRegistered.toJson() + "\n\n");
+            // view 객체 생성
+            MyPage myPage = new MyPage();
+            // view 객체에 이벤트의 Value 를 set 함
+            // myPage.setId(vaccineReserved.getId());
+            myPage.setUserId(vaccineReserved.getUserId());
+            myPage.setHospital(vaccineReserved.getHospital());
+            myPage.setReservedDate(vaccineReserved.getReservedDate());
+            myPage.setReservationStatus(vaccineReserved.getReservationStatus());
+            myPage.setUserId(vaccineReserved.getUserId());
+            myPage.setHospital(vaccineReserved.getHospital());
+            myPage.setReservedDate(vaccineReserved.getReservedDate());
+            myPage.setReservationStatus(vaccineReserved.getReservationStatus());
+            // view 레파지 토리에 save
+            myPageRepository.save(myPage);
 
-        if(vaccineRegistered.validate()){
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-            /////////////////////////////////////////////
-            // 취소 요청이 왔을 때 -> status -> cancelled 
-            /////////////////////////////////////////////
-            System.out.println("##### listener vaccineRegistered : " + vaccineRegistered.toJson());
-            Notification noti = new Notification();
-            // 취소시킬 payId 추출
-            // long id = vaccineRegistered.getId(); // 취소시킬 payId
 
-            // Optional<Notification> res = notificationRepository.findById(id);
-            // Notification noti = res.get();
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenVaccineReserved_then_UPDATE_1(@Payload VaccineReserved vaccineReserved) {
+        try {
+            if (!vaccineReserved.validate()) return;
+                // view 객체 조회
 
-            noti.setUserId(vaccineRegistered.getUserId());
-            noti.setMessage("관리자에 의해 백신이 등록되었습니다.");
-            noti.setVaccineStatus("registered"); 
+                    List<MyPage> myPageList = myPageRepository.findByUserId(vaccineReserved.getUserId());
+                    for(MyPage myPage : myPageList){
+                    // view 객체에 이벤트의 eventDirectValue 를 set 함
+                    myPage.setReservationStatus(vaccineReserved.getReservationStatus());
+                // view 레파지 토리에 save
+                myPageRepository.save(myPage);
+                }
 
-            // DB Update
-            notificationRepository.save(noti);
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReservationCancelled_SendSms(@Payload ReservationCancelled reservationCancelled){
+    public void whenReservationCancelled_then_UPDATE_2(@Payload ReservationCancelled reservationCancelled) {
+        try {
+            if (!reservationCancelled.validate()) return;
+                // view 객체 조회
 
-        // if(!reservationCancelled.validate()) return;
+                    List<MyPage> myPageList = myPageRepository.findByUserId(reservationCancelled.getUserId());
+                    for(MyPage myPage : myPageList){
+                    // view 객체에 이벤트의 eventDirectValue 를 set 함
+                    myPage.setReservationStatus(reservationCancelled.getReservationStatus());
+                // view 레파지 토리에 save
+                myPageRepository.save(myPage);
+                }
 
-        System.out.println("\n\n##### listener SendSms : " + reservationCancelled.toJson() + "\n\n");
-
-        if(reservationCancelled.validate()){
-
-            /////////////////////////////////////////////
-            // 취소 요청이 왔을 때 -> status -> cancelled 
-            /////////////////////////////////////////////
-            System.out.println("##### listener reservationCancelled : " + reservationCancelled.toJson());
-            
-            // 취소시킬 Id 추출
-            // long id = reservationCancelled.getId(); // 취소시킬 Id
-
-            Notification noti = new Notification();
-            // Optional<Notification> res = notificationRepository.findById(id);
-            // Notification noti = res.get();
-
-            noti.setUserId(reservationCancelled.getUserId());
-            noti.setMessage("예약이 취소되었습니다.");
-            // noti.setVaccineStatus("reservationcancelled"); 
-
-            // DB Update
-            notificationRepository.save(noti);
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-        // Sample Logic //
-        // Notification notification = new Notification();
-        // notificationRepository.save(notification);
-
     }
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverVaccineReserved_SendSms(@Payload VaccineReserved vaccineReserved){
+    public void whenReservationCancelled_then_UPDATE_3(@Payload ReservationCancelled reservationCancelled) {
+        try {
+            if (!reservationCancelled.validate()) return;
+                // view 객체 조회
 
-        // if(!vaccineReserved.validate()) return;
+                    List<MyPage> myPageList = myPageRepository.findByUserId(reservationCancelled.getUserId());
+                    for(MyPage myPage : myPageList){
+                    // view 객체에 이벤트의 eventDirectValue 를 set 함
+                    myPage.setReservationStatus(reservationCancelled.getReservationStatus());
+                // view 레파지 토리에 save
+                myPageRepository.save(myPage);
+                }
 
-        System.out.println("\n\n##### listener SendSms : " + vaccineReserved.toJson() + "\n\n");
-
-        if(vaccineReserved.validate()){
-            /////////////////////////////////////////////
-            // 취소 요청이 왔을 때 -> status -> cancelled 
-            /////////////////////////////////////////////
-            System.out.println("##### listener vaccineReserved : " + vaccineReserved.toJson());
-            
-            // 취소시킬 Id 추출
-            // long id = vaccineReserved.getId(); // 취소시킬 Id
-
-            Notification noti = new Notification();
-            // Optional<Notification> res = notificationRepository.findById(id);
-            // Notification noti = res.get();
-
-            noti.setUserId(vaccineReserved.getUserId());
-            noti.setHospital(vaccineReserved.getHospital());
-            noti.setMessage("접종이 예약되었습니다.");
-            // noti.setVaccineStatus("reservationcancelled"); 
-
-            // DB Update
-            notificationRepository.save(noti);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 ```
 - 실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
-![4  Notification_알림생성](https://user-images.githubusercontent.com/86760552/131065640-5c631fc8-0c01-4cff-89bc-c87923f1c65b.PNG)
+![5  마이페이지 조회](https://user-images.githubusercontent.com/86760552/131079768-68df7fc5-a423-42c5-a1ac-751123c72714.PNG)
 
 '''
 
