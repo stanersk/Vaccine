@@ -263,9 +263,8 @@ http patch localhost:8088/reservations/1 reservationStatus="cancelled
 		</dependency>
 
 ```
-```
 ![image](https://user-images.githubusercontent.com/86760552/131065064-33a9240f-c23e-4d18-8a4b-b893c1963c6e.png)
-```
+
 
 ## 동기식 호출 과 Fallback 처리 -- Update 예정....
 
@@ -423,7 +422,8 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ```
 ## CQRS
 
-table 구조도.. 등..
+- Table 구조
+![스크린샷 2021-08-27 오전 11 55 18](https://user-images.githubusercontent.com/86760552/131065313-35e846d8-e5c6-42fd-a3c0-c57660e0de88.png)
 
 
 
