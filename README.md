@@ -244,8 +244,6 @@ http post localhost:8088/reservations vaccineId=1 userId=1 reservedDate=2021-08-
 백신 취소
 http patch localhost:8088/reservations/1 reservationStatus="cancelled
 
-```
-
 
 ## 폴리글랏 퍼시스턴스 -- 검토 필요
 
