@@ -801,42 +801,26 @@ Concurrency:		       96.02
 
 1: cofingmap.yml 파일 생성
 ```
-kubectl apply -f cofingmap.yml
-
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: airbnb-config
-  namespace: airbnb
+  name: reservation
 data:
-  # 단일 key-value
-  max_reservation_per_person: "10"
-  ui_properties_file_name: "user-interface.properties"
+  API_URL_VACCINE: "http://vaccine:8080"
+
 ```
 2: deployment.yml에 적용하기
 ```
-kubectl apply -f deployment.yml
-
-
-.......
-          env:
-			# cofingmap에 있는 단일 key-value
-            - name: MAX_RESERVATION_PER_PERSION
-              valueFrom:
-                configMapKeyRef:
-                  name: airbnb-config
-                  key: max_reservation_per_person
-           - name: UI_PROPERTIES_FILE_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: airbnb-config
-                  key: ui_properties_file_name
-          volumeMounts:
-          - mountPath: "/mnt/aws"
-            name: volume
-      volumes:
-        - name: volume
-          persistentVolumeClaim:
-            claimName: aws-efs
+spec:
+containers:
+- name: reservation
+  image: user09acr.azurecr.io/reservation:latest
+  ports:
+    - containerPort: 8080
+  envFrom: 
+    - configMapRef:
+	name: reservation
 ```
+- 실제 모습
+
+![configmap_kubectl](https://user-images.githubusercontent.com/86760552/131078470-747d7f86-f066-416b-ad54-59c808fb6181.jpg)
