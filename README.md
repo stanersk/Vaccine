@@ -1,6 +1,6 @@
 ![image](https://user-images.githubusercontent.com/86760552/130912831-8ec7077a-8f58-4f1c-b08e-56fc51640bac.png)
 
-# 백신 예약 시스템 - 완료
+# 백신 예약 시스템
 
 본 예제는 MSA/DDD/Event Storming/EDA 를 포괄하는 분석/설계/구현/운영 전단계를 커버하도록 구성한 예제입니다.
 이는 클라우드 네이티브 애플리케이션의 개발에 요구되는 체크포인트들을 통과하기 위한 예시 답안을 포함합니다.
@@ -26,7 +26,7 @@
     - [무정지 재배포](#무정지-재배포)
   - [신규 개발 조직의 추가](#신규-개발-조직의-추가)
 
-# 서비스 시나리오 - 완료
+# 서비스 시나리오 
 
 백신 예약
 
@@ -107,9 +107,9 @@
     - Contract Test :  자동화된 경계 테스트를 통하여 구현 오류나 API 계약위반를 미리 차단 가능한가?
 
 
-# 분석/설계 - 완료
+# 분석/설계 
 
-### 1차 완성 모형 및 기능적/비기능적 요구사항을 커버하는지 검증
+### 완성 모형 및 기능적/비기능적 요구사항을 커버하는지 검증
 
 ![image](https://user-images.githubusercontent.com/86760552/130928450-65ca9b8f-6c4d-4041-9638-0043c5f5aca3.png)
 
@@ -124,7 +124,7 @@
    
     - 모델은 모든 요구사항을 커버함.
 
-### 비기능 요구사항에 대한 검증 - 완료
+### 비기능 요구사항에 대한 검증 
 
 ![image](https://user-images.githubusercontent.com/86760552/130930333-b0202777-9080-4cad-a52b-dc4a822d7aa5.png)
 
@@ -133,7 +133,7 @@
     (3) 예약정보를 한번에 확인할 수 있어야 한다.(CQRS)
     (4) 백신 관리시스템이 문제가 있더라도 예약 취소는 받을 수 있어야 한다.(Async event-driven)
 
-## 헥사고날 아키텍처 다이어그램 도출 - 완료
+## 헥사고날 아키텍처 다이어그램 도출
     
 ![image](https://user-images.githubusercontent.com/86760552/130935503-58a4f6d4-7367-434f-87c6-eb7740fc07b8.png)
 
@@ -143,7 +143,7 @@
     - 서브 도메인과 바운디드 컨텍스트의 분리:  각 팀의 KPI 별로 아래와 같이 관심 구현 스토리를 나눠가짐
 
 
-# 구현 - 완료
+# 구현 
 
 분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트와 파이선으로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
 
@@ -152,7 +152,7 @@ mvn spring-boot:run
 
 ```
 
-## DDD 의 적용 - 완료
+## DDD 의 적용
 
 - 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 VaccineMgmt 마이크로 서비스). 
 
@@ -249,7 +249,7 @@ http patch localhost:8088/reservations/1 reservationStatus="cancelled
 
 ```
 
-## 폴리글랏 퍼시스턴스 -- 완료
+## 폴리글랏 퍼시스턴스
 
 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (pom.xml) 만으로 hsqldb 로 부착시켰다
 
@@ -266,7 +266,7 @@ http patch localhost:8088/reservations/1 reservationStatus="cancelled
 ![image](https://user-images.githubusercontent.com/86760552/131065064-33a9240f-c23e-4d18-8a4b-b893c1963c6e.png)
 
 
-## 동기식 호출 과 Fallback 처리 -- 완료
+## 동기식 호출 과 Fallback 처리 
 
 분석단계에서의 조건 중 하나로 백신예약->백신관리 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
@@ -335,7 +335,7 @@ public interface VaccineMgmtService {
 
 
 
-## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트 -- 소스 코드 적용.
+## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트 
 
 
 백신 Notification 정보 관리는 비동기식으로 처리하여 백신관리 시스템의 처리에 영향을 주지 않도록 블로킹 처리가 되지 않도록 처리한다.
