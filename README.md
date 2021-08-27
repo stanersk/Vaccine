@@ -869,10 +869,9 @@ spec:
         - name: volume
           persistentVolumeClaim:
             claimName: vaccine-pvc
-
 ```
-
 3. A pod에서 파일을 올리고 B pod 에서 확인
+
 ```
 kubectl get pod
 NAME                            READY   STATUS    RESTARTS   AGE
