@@ -266,14 +266,14 @@ http patch localhost:8088/reservations/1 reservationStatus="cancelled
 ![image](https://user-images.githubusercontent.com/86760552/131065064-33a9240f-c23e-4d18-8a4b-b893c1963c6e.png)
 
 
-## 동기식 호출 과 Fallback 처리 -- Update 예정....
+## 동기식 호출 과 Fallback 처리 -- 완료
 
-분석단계에서의 조건 중 하나로 주문(app)->결제(pay) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
+분석단계에서의 조건 중 하나로 백신예약->백신관리 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
-- 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
+- 백신관리 서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
 
 ```
-# (app) vaccinereservation.java
+# VaccineMgmtService.java
 
 package vaccinereservation.external;
 
@@ -282,13 +282,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 
-@FeignClient(name="vaccine", url="http://vaccine:8080")  // 추가 부분이 필요함.
+@FeignClient(name="vaccine", url="http://localhost:8088")
 public interface VaccineMgmtService {
-    @RequestMapping(method= RequestMethod.GET, path="/vaccineMgmts")
-    public void updateVaccine(@RequestBody VaccineMgmt vaccineMgmt);
+    @RequestMapping(method= RequestMethod.PUT, path="/vaccineMgmts/updateVaccine")
+    public void updateVaccine(@RequestParam("vaccineId") long vaccineId);
 
 }
 
@@ -296,11 +297,18 @@ public interface VaccineMgmtService {
 
 - 예약을 받은 직후(@PostPersist) 백신 확보 및 예약 처리를 하도록 설계
 ```
-# VaccineMgmt.java (Entity)
+# VaccineMgmt.java
 
     @PostPersist
     public void onPostPersist(){
         VaccineRegistered vaccineRegistered = new VaccineRegistered();
+        vaccineRegistered.setId(this.getId());
+        vaccineRegistered.setUserId(this.getUserId());
+        vaccineRegistered.setHospital(this.getHospital());
+        vaccineRegistered.setAvailableDate(this.getAvailableDate());        
+        // vaccineRegistered.setQty(this.getQty());
+        vaccineRegistered.setVaccineStatus("registered");
+
         BeanUtils.copyProperties(this, vaccineRegistered);
         vaccineRegistered.publishAfterCommit();
 
