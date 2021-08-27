@@ -234,8 +234,10 @@ public interface VaccineMgmtRepository extends PagingAndSortingRepository<Vaccin
 }
 
 ```
+- 적용 후 REST API 의 테스트
 
-# 백신 등록
+
+백신 등록
 http post localhost:8088/vaccineMgmts id=1 qty=100 availableDate=2021-08-30 hospital=seoul
 
 백신 예약
