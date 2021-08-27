@@ -431,7 +431,102 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 ![스크린샷 2021-08-27 오전 11 55 18](https://user-images.githubusercontent.com/86760552/131065313-35e846d8-e5c6-42fd-a3c0-c57660e0de88.png)
 
+- viewpage MSA ViewHandler 를 통해 구현
+```
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverVaccineRegistered_SendSms(@Payload VaccineRegistered vaccineRegistered){
 
+        // if(!vaccineRegistered.validate()) return;
+
+        System.out.println("\n\n##### listener SendSms : " + vaccineRegistered.toJson() + "\n\n");
+
+        if(vaccineRegistered.validate()){
+
+            /////////////////////////////////////////////
+            // 취소 요청이 왔을 때 -> status -> cancelled 
+            /////////////////////////////////////////////
+            System.out.println("##### listener vaccineRegistered : " + vaccineRegistered.toJson());
+            Notification noti = new Notification();
+            // 취소시킬 payId 추출
+            // long id = vaccineRegistered.getId(); // 취소시킬 payId
+
+            // Optional<Notification> res = notificationRepository.findById(id);
+            // Notification noti = res.get();
+
+            noti.setUserId(vaccineRegistered.getUserId());
+            noti.setMessage("관리자에 의해 백신이 등록되었습니다.");
+            noti.setVaccineStatus("registered"); 
+
+            // DB Update
+            notificationRepository.save(noti);
+
+        }
+    }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverReservationCancelled_SendSms(@Payload ReservationCancelled reservationCancelled){
+
+        // if(!reservationCancelled.validate()) return;
+
+        System.out.println("\n\n##### listener SendSms : " + reservationCancelled.toJson() + "\n\n");
+
+        if(reservationCancelled.validate()){
+
+            /////////////////////////////////////////////
+            // 취소 요청이 왔을 때 -> status -> cancelled 
+            /////////////////////////////////////////////
+            System.out.println("##### listener reservationCancelled : " + reservationCancelled.toJson());
+            
+            // 취소시킬 Id 추출
+            // long id = reservationCancelled.getId(); // 취소시킬 Id
+
+            Notification noti = new Notification();
+            // Optional<Notification> res = notificationRepository.findById(id);
+            // Notification noti = res.get();
+
+            noti.setUserId(reservationCancelled.getUserId());
+            noti.setMessage("예약이 취소되었습니다.");
+            // noti.setVaccineStatus("reservationcancelled"); 
+
+            // DB Update
+            notificationRepository.save(noti);
+
+        }
+
+        // Sample Logic //
+        // Notification notification = new Notification();
+        // notificationRepository.save(notification);
+
+    }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverVaccineReserved_SendSms(@Payload VaccineReserved vaccineReserved){
+
+        // if(!vaccineReserved.validate()) return;
+
+        System.out.println("\n\n##### listener SendSms : " + vaccineReserved.toJson() + "\n\n");
+
+        if(vaccineReserved.validate()){
+            /////////////////////////////////////////////
+            // 취소 요청이 왔을 때 -> status -> cancelled 
+            /////////////////////////////////////////////
+            System.out.println("##### listener vaccineReserved : " + vaccineReserved.toJson());
+            
+            // 취소시킬 Id 추출
+            // long id = vaccineReserved.getId(); // 취소시킬 Id
+
+            Notification noti = new Notification();
+            // Optional<Notification> res = notificationRepository.findById(id);
+            // Notification noti = res.get();
+
+            noti.setUserId(vaccineReserved.getUserId());
+            noti.setHospital(vaccineReserved.getHospital());
+            noti.setMessage("접종이 예약되었습니다.");
+            // noti.setVaccineStatus("reservationcancelled"); 
+
+            // DB Update
+            notificationRepository.save(noti);
+        }
+    }
+```
 - 실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
 ![4  Notification_알림생성](https://user-images.githubusercontent.com/86760552/131065640-5c631fc8-0c01-4cff-89bc-c87923f1c65b.PNG)
 
