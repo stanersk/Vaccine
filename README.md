@@ -371,26 +371,30 @@ http localhost:8081/orders item=피자 storeId=2   #Success
 - 이를 위하여 결제이력에 기록을 남긴 후에 곧바로 결제승인이 되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
  
 ```
-package fooddelivery;
+package vaccinereservation;
 
 @Entity
-@Table(name="결제이력_table")
-public class 결제이력 {
+@Table(name="Reservation_table")
+public class Reservation {
 
  ...
-    @PrePersist
-    public void onPrePersist(){
-        결제승인됨 결제승인됨 = new 결제승인됨();
-        BeanUtils.copyProperties(this, 결제승인됨);
-        결제승인됨.publish();
-    }
+    @PostUpdate
+    public void onPostUpdate() {
+        final ReservationCancelled reservationCancelled = new ReservationCancelled();
+        reservationCancelled.setId(this.getId());
+        reservationCancelled.setUserId(this.getUserId());
+        reservationCancelled.setHospital(this.getHospital());
+        reservationCancelled.setReservedDate(this.getReservedDate());
+        reservationCancelled.setReservationStatus("reserved");
 
-}
+        BeanUtils.copyProperties(this, reservationCancelled);
+        reservationCancelled.publishAfterCommit();
+    }
 ```
 - 상점 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
 
 ```
-package fooddelivery;
+package vaccinereservation;
 
 ...
 
@@ -398,15 +402,32 @@ package fooddelivery;
 public class PolicyHandler{
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
+    public void wheneverReservationCancelled_IncreaseVaccine(@Payload ReservationCancelled reservationCancelled){
 
-        if(결제승인됨.isMe()){
-            System.out.println("##### listener 주문정보받음 : " + 결제승인됨.toJson());
-            // 주문 정보를 받았으니, 요리를 슬슬 시작해야지..
+        if(!reservationCancelled.validate()) return;
+
+        System.out.println("\n\n##### listener IncreaseVaccine : " + reservationCancelled.toJson() + "\n\n");
+
+        if(reservationCancelled.validate()){
+
+            /////////////////////////////////////////////
+            // 취소 요청이 왔을 때 -> status -> cancelled 
+            /////////////////////////////////////////////
+            System.out.println("##### listener CancelPayment : " + reservationCancelled.toJson());
             
-        }
-    }
+            // 취소시킬 payId 추출
+            long id = reservationCancelled.getId(); // 취소시킬 payId
 
+            Optional<VaccineMgmt> res = vaccineMgmtRepository.findById(id);
+            VaccineMgmt vaccine = res.get();
+
+            vaccine.setReservationId(reservationCancelled.getId());
+            vaccine.setUserId(reservationCancelled.getUserId());
+            vaccine.setQty(vaccine.getQty() + 1); 
+
+            // DB Update
+            vaccineMgmtRepository.save(vaccine);
+        }
 }
 
 ```
