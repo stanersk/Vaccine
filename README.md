@@ -423,14 +423,15 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ## CQRS
 
 - Table 구조
+
 ![스크린샷 2021-08-27 오전 11 55 18](https://user-images.githubusercontent.com/86760552/131065313-35e846d8-e5c6-42fd-a3c0-c57660e0de88.png)
 
 
 
+- 실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
 
 ![4  Notification_알림생성](https://user-images.githubusercontent.com/86760552/131065640-5c631fc8-0c01-4cff-89bc-c87923f1c65b.PNG)
 
-- 실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
 
 
 '''
