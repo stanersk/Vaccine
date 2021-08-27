@@ -249,7 +249,7 @@ http patch localhost:8088/reservations/1 reservationStatus="cancelled
 
 ```
 
-## 폴리글랏 퍼시스턴스 -- 검토 필요
+## 폴리글랏 퍼시스턴스 -- 완료
 
 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (pom.xml) 만으로 hsqldb 로 부착시켰다
 
@@ -430,7 +430,7 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 
 - 실제로 view 페이지를 조회해 보면 모든 예약에 대한 전반적인 상태를 알수 있다.
-![notification](https://user-images.githubusercontent.com/86760552/131062888-838a6a0b-7255-41de-b41c-45932d71de86.JPG)
+
 
 '''
 
