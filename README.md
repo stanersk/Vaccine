@@ -600,11 +600,6 @@ Vanccine 관리 프로젝트에서는 PolicyHandler에서 처리 시 어떤 건�
 		  ports:
 		    - containerPort: 8080
 
-```
-
-Gateway 그림 삽입 필요.
-
-```
   3. Kubernetes용 Service.yaml을 작성하고 Kubernetes에 Service/LoadBalancer을 생성하여 Gateway 엔드포인트를 확인함. 
       - Service.yaml 예시
       
@@ -626,7 +621,9 @@ Gateway 그림 삽입 필요.
         Service 생성
         kubectl apply -f service.yaml      
 ```
-Gateway Loadbal 그림 삽입 필요.
+Gateway Loadbal 확인
+![gateway_LB](https://user-images.githubusercontent.com/86760552/131075921-affd92fb-b9e8-43ed-9530-e62c9eaba94e.jpg)
+
 
 
 # 운영
@@ -635,6 +632,12 @@ Gateway Loadbal 그림 삽입 필요.
 
 
 각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 GCP를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 cloudbuild.yml 에 포함되었다.
+
+- 도커 이미지
+![도커 이미지](https://user-images.githubusercontent.com/86760552/131076024-b138926d-43b3-4ffe-9cf3-61b935d3bc6e.png)
+
+- Azure Portal
+![azure_potal](https://user-images.githubusercontent.com/86760552/131076080-9043917d-d1cc-4b8e-bdd0-a69157bf2e68.PNG)
 
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
