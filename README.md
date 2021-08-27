@@ -705,35 +705,21 @@ $ siege -c100 -t60S -v --content-type "application/json" 'http://localhost:8081/
 
 - 결제서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
 ```
-kubectl autoscale deploy pay --min=1 --max=10 --cpu-percent=15
+kubectl autoscale deploy reservations --min=1 --max=10 --cpu-percent=15
 ```
-- CB 에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
+- CB 에서 했던 방식대로 워크로드를 1분 동안 걸어준다.
 ```
-siege -c100 -t120S -r10 --content-type "application/json" 'http://localhost:8081/orders POST {"item": "chicken"}'
+siege -c100 -t60S -v --content-type "application/json" 'http://localhost:8081/reservations POST {"vaccineId": 1}'
+
 ```
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
 ```
-kubectl get deploy pay -w
+kubectl get deploy reservation -w
+
 ```
-- 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-```
-NAME    DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-pay     1         1         1            1           17s
-pay     1         2         1            1           45s
-pay     1         4         1            1           1m
-:
-```
-- siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
-```
-Transactions:		        5078 hits
-Availability:		       92.45 %
-Elapsed time:		       120 secs
-Data transferred:	        0.34 MB
-Response time:		        5.60 secs
-Transaction rate:	       17.15 trans/sec
-Throughput:		        0.01 MB/sec
-Concurrency:		       96.02
-```
+- 어느정도 시간이 흐른 후 스케일 아웃이 벌어지는 것을 확인할 수 있다:
+
+![autoscale 결과](https://user-images.githubusercontent.com/86760552/131078744-4ba84440-e04b-4727-87b7-d3fac60597ce.png)
 
 
 ## 무정지 재배포
@@ -742,16 +728,13 @@ Concurrency:		       96.02
 
 - seige 로 배포작업 직전에 워크로드를 모니터링 함.
 ```
-siege -c100 -t120S -r10 --content-type "application/json" 'http://localhost:8081/orders POST {"item": "chicken"}'
+siege -c100 -t60S -v --content-type "application/json" 'http://localhost:8081/reservations POST {"vaccineId": 1}'
 
-** SIEGE 4.0.5
-** Preparing 100 concurrent users for battle.
-The server is now under siege...
 
-HTTP/1.1 201     0.68 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.68 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.70 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.70 secs:     207 bytes ==> POST http://localhost:8081/orders
+HTTP/1.1 201     0.68 secs:     207 bytes ==> POST http://localhost:8081/reservations
+HTTP/1.1 201     0.68 secs:     207 bytes ==> POST http://localhost:8081/reservations
+HTTP/1.1 201     0.70 secs:     207 bytes ==> POST http://localhost:8081/reservations
+HTTP/1.1 201     0.70 secs:     207 bytes ==> POST http://localhost:8081/reservations
 :
 
 ```
@@ -763,17 +746,17 @@ kubectl set image ...
 
 - seige 의 화면으로 넘어가서 Availability 가 100% 미만으로 떨어졌는지 확인
 ```
-Transactions:		        3078 hits
-Availability:		       70.45 %
-Elapsed time:		       120 secs
-Data transferred:	        0.34 MB
+Transactions:		        1278 hits
+Availability:		       81.45 %
+Elapsed time:		       60 secs
+Data transferred:	        0.32 MB
 Response time:		        5.60 secs
-Transaction rate:	       17.15 trans/sec
+Transaction rate:	       16.15 trans/sec
 Throughput:		        0.01 MB/sec
 Concurrency:		       96.02
 
 ```
-배포기간중 Availability 가 평소 100%에서 70% 대로 떨어지는 것을 확인. 원인은 쿠버네티스가 성급하게 새로 올려진 서비스를 READY 상태로 인식하여 서비스 유입을 진행한 것이기 때문. 이를 막기위해 Readiness Probe 를 설정함:
+배포기간중 Availability 가 평소 100%에서 80% 대로 떨어지는 것을 확인. 원인은 쿠버네티스가 성급하게 새로 올려진 서비스를 READY 상태로 인식하여 서비스 유입을 진행한 것이기 때문. 이를 막기위해 Readiness Probe 를 설정함:
 
 ```
 # deployment.yaml 의 readiness probe 의 설정:
@@ -784,11 +767,11 @@ kubectl apply -f kubernetes/deployment.yaml
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
 ```
-Transactions:		        3078 hits
+Transactions:		        1278 hits
 Availability:		       100 %
-Elapsed time:		       120 secs
+Elapsed time:		        60 secs
 Data transferred:	        0.34 MB
-Response time:		        5.60 secs
+Response time:		        5.40 secs
 Transaction rate:	       17.15 trans/sec
 Throughput:		        0.01 MB/sec
 Concurrency:		       96.02
